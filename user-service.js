@@ -1,12 +1,26 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Schema = mongoose.Schema;
+const { MongoClient } = require("mongodb");
+const dotenv = require("dotenv");
+dotenv.config();
 
 let mongoDBConnectionString = process.env.MONGO_URL;
 
-let Schema = mongoose.Schema;
+// const userSchema = new Schema({
+//   userName: {
+//     type: String,
+//     unique: true,
+//   },
+//   password: String,
+//   favourites: [String],
+//   history: [String],
+// });
 
-let userSchema = new Schema({
+// let User;
+
+const userSchema = new Schema({
   userName: {
     type: String,
     unique: true,
@@ -15,40 +29,25 @@ let userSchema = new Schema({
   favourites: [String],
   history: [String],
 });
+let User; // to be defined on new connection (see initialize)
 
-let User;
-
-// module.exports.connect = function () {
-//   return new Promise(function (resolve, reject) {
-//     let db = mongoose.createConnection(mongoDBConnectionString);
-
-//     db.on("error", (err) => {
-//       reject(err);
-//     });
-
-//     db.once("open", () => {
-//       User = db.model("users", userSchema);
-//       resolve();
-//     });
-//   });
-// };
-
-module.exports.connect = function () {
-  return new Promise(function (resolve, reject) {
-    let db = mongoose.createConnection(mongoDBConnectionString);
-
-    db.on("error", (err) => {
-      console.error("MongoDB connection error:", err);
-      reject("Unable to connect to the database");
+module.exports.initialize = function () {
+    return new Promise((resolve, reject) => {
+      let db = mongoose.createConnection(mongoDBConnectionString, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
+  
+      db.on("error", (err) => {
+        reject(err);
+      });
+  
+      db.once("open", () => {
+        User = db.model("users", userSchema);
+        resolve();
+      });
     });
-
-    db.once("open", () => {
-      User = db.model("users", userSchema);
-      resolve();
-    });
-  });
-};
-
+  };
 module.exports.registerUser = function (userData) {
   return new Promise(function (resolve, reject) {
     if (userData.password != userData.password2) {
