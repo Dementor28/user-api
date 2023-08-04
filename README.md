@@ -1,1 +1,1 @@
-Deployment Link: https://fragile-neckerchief-ray.cyclic.cloud/
+Deployment Link: https://handkerchief-fox.cyclic.app
