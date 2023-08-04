@@ -1,9 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const passportJWT = require("passport-jwt");
-const ExtractJwt = passportJWT.ExtractJwt;
-const JwtStrategy = passportJWT.Strategy;
+
 
 let mongoDBConnectionString = process.env.MONGO_URL;
 
@@ -186,21 +184,6 @@ module.exports.removeHistory = function (id, historyId) {
       });
   });
 };
-
-const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: process.env.JWT_SECRET,
-};
-
-const strategy = new JwtStrategy(jwtOptions, (jwt_payload, done) => {
-  // Check if the user exists in the database based on jwt_payload._id
-  // You can add this logic to validate the user before allowing access to protected routes.
-  // For this example, we will assume the user is valid.
-  done(null, { _id: jwt_payload._id, userName: jwt_payload.userName });
-});
-
-passport.use(strategy);
-
 module.exports.generateToken = function (user) {
   const payload = { _id: user._id, userName: user.userName };
   return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
