@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-
 let mongoDBConnectionString = process.env.MONGO_URL;
 
 let Schema = mongoose.Schema;
@@ -19,12 +18,28 @@ let userSchema = new Schema({
 
 let User;
 
+// module.exports.connect = function () {
+//   return new Promise(function (resolve, reject) {
+//     let db = mongoose.createConnection(mongoDBConnectionString);
+
+//     db.on("error", (err) => {
+//       reject(err);
+//     });
+
+//     db.once("open", () => {
+//       User = db.model("users", userSchema);
+//       resolve();
+//     });
+//   });
+// };
+
 module.exports.connect = function () {
   return new Promise(function (resolve, reject) {
     let db = mongoose.createConnection(mongoDBConnectionString);
 
     db.on("error", (err) => {
-      reject(err);
+      console.error("MongoDB connection error:", err);
+      reject("Unable to connect to the database");
     });
 
     db.once("open", () => {
