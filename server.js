@@ -14,6 +14,7 @@ const HTTP_PORT = process.env.PORT || 8080;
 let ExtractJwt = passportJWT.ExtractJwt;
 let JwtStrategy = passportJWT.Strategy;
 
+app.use(passport.initialize());
 // Configure its options
 let jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
