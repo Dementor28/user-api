@@ -51,7 +51,7 @@ app.use((req, res, next) => {
 
 app.use(passport.initialize()); // Initialize Passport middleware
 
-app.post("/api/user/register", (req, res) => {
+app.post("/api/register", (req, res) => {
   userService
     .registerUser(req.body)
     .then((msg) => {
@@ -62,7 +62,7 @@ app.post("/api/user/register", (req, res) => {
     });
 });
 
-app.post("/api/user/login", (req, res) => {
+app.post("/api/login", (req, res) => {
   userService
     .checkUser(req.body)
     .then((user) => {
