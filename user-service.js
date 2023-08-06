@@ -22,8 +22,8 @@ module.exports.connect = function () {
     const db = mongoose.createConnection(mongoDBConnectionString);
 
     if (
-      !connectionString.startsWith("mongodb://") &&
-      !connectionString.startsWith("mongodb+srv://")
+      !mongoDBConnectionString.startsWith("mongodb://") &&
+      !mongoDBConnectionString.startsWith("mongodb+srv://")
     ) {
       reject(new Error("Invalid MongoDB connection string"));
     }
