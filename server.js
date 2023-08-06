@@ -99,6 +99,10 @@ app.get(
   }
 );
 
+app.get('/hello', (req, res) => {
+  res.send('Hello, World!');
+});
+
 app.put(
   "/api/user/favourites/:id",
   passport.authenticate("jwt", { session: false }),
