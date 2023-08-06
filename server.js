@@ -12,6 +12,7 @@ const bodyParser = require('body-parser');
 const HTTP_PORT = process.env.PORT || 8080;
 
 app.use(cors());
+app.options('*', cors());
 
 // Configure passport and JWT Strategy
 let ExtractJwt = passportJWT.ExtractJwt;
