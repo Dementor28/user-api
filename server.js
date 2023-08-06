@@ -7,12 +7,15 @@ const userService = require("./user-service.js");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const passportJWT = require("passport-jwt");
+const bodyParser = require('body-parser');
 
 const HTTP_PORT = process.env.PORT || 8080;
 
 // Configure passport and JWT Strategy
 let ExtractJwt = passportJWT.ExtractJwt;
 let JwtStrategy = passportJWT.Strategy;
+
+app.use(bodyParser.json());
 
 let jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("jwt"),
