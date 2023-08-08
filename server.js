@@ -40,9 +40,6 @@ let strategy = new JwtStrategy(jwtOptions, function (jwt_payload, next) {
 
 passport.use(strategy);
 
-app.use(express.json());
-app.use(cors());
-
 // Set the Content-Type header to application/json for all API responses
 app.use((req, res, next) => {
   res.setHeader("Content-Type", "application/json");
@@ -142,7 +139,7 @@ app.delete(
 );
 
 app.get(
-  "/api/user/history",
+  "/api/history",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     userService
@@ -157,7 +154,7 @@ app.get(
 );
 
 app.put(
-  "/api/user/history/:id",
+  "/api/history/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     userService
@@ -172,7 +169,7 @@ app.put(
 );
 
 app.delete(
-  "/api/user/history/:id",
+  "/api/history/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     userService
