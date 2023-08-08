@@ -40,13 +40,13 @@ let strategy = new JwtStrategy(jwtOptions, function (jwt_payload, next) {
 
 passport.use(strategy);
 
-// Set the Content-Type header to application/json for all API responses
+
 app.use((req, res, next) => {
   res.setHeader("Content-Type", "application/json");
   next();
 });
 
-app.use(passport.initialize()); // Initialize Passport middleware
+app.use(passport.initialize());
 
 app.post("/api/register", (req, res) => {
   userService
@@ -73,10 +73,10 @@ app.post("/api/login", (req, res) => {
         userName: user.userName,
       };
 
-      // Generate JWT token using payload and secret key
+
       let token = jwt.sign(payload, jwtOptions.secretOrKey);
 
-      // Include the token in the response message
+
       res.json({ message: "login successful", token: token });
     })
     .catch((msg) => {
@@ -88,7 +88,6 @@ app.post("/api/login", (req, res) => {
 
 });
 
-// Protect the routes using passport.authenticate() middleware
 app.get(
   "/api/favourites",
   passport.authenticate("jwt", { session: false }),
