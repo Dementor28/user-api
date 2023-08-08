@@ -63,10 +63,14 @@ app.post("/api/register", (req, res) => {
 });
 
 app.post("/api/login", (req, res) => {
-  userService
+  
+  try {
+    console.log(req)
+    userService
     .checkUser(req.body)
     .then((user) => {
       // Generate JWT payload
+      console.log(user)
       let payload = {
         _id: user._id,
         userName: user.userName,
@@ -81,11 +85,15 @@ app.post("/api/login", (req, res) => {
     .catch((msg) => {
       res.status(422).json({ message: msg });
     });
+  } catch (error) {
+    console.log(error)
+  }
+
 });
 
 // Protect the routes using passport.authenticate() middleware
 app.get(
-  "/api/user/favourites",
+  "/api/favourites",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     userService
@@ -104,7 +112,7 @@ app.get('/hello', (req, res) => {
 });
 
 app.put(
-  "/api/user/favourites/:id",
+  "/api/favourites/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     userService
@@ -119,7 +127,7 @@ app.put(
 );
 
 app.delete(
-  "/api/user/favourites/:id",
+  "/api/favourites/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     userService
